@@ -1,7 +1,7 @@
-import * as THREE from 'three';
-import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
-import { World } from './world';
-import { blocks } from './blocks';
+import * as THREE from "three";
+import { PointerLockControls } from "three/addons/controls/PointerLockControls.js";
+import { World } from "./world";
+import { blocks } from "./blocks";
 
 const CENTER_SCREEN = new THREE.Vector2();
 
@@ -18,12 +18,22 @@ export class Player {
   velocity = new THREE.Vector3();
   #worldVelocity = new THREE.Vector3();
 
-  camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera = new THREE.PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    100
+  );
   cameraHelper = new THREE.CameraHelper(this.camera);
   controls = new PointerLockControls(this.camera, document.body);
   debugCamera = false;
 
-  raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(), 0, 3);
+  raycaster = new THREE.Raycaster(
+    new THREE.Vector3(),
+    new THREE.Vector3(),
+    0,
+    3
+  );
   selectedCoords = null;
   activeBlockId = blocks.empty.id;
 
@@ -37,8 +47,8 @@ export class Player {
     // The rotation speed of the tool
     animationSpeed: 0.025,
     // Reference to the current animation
-    animation: null
-  }
+    animation: null,
+  };
 
   constructor(scene, world) {
     this.world = world;
@@ -48,8 +58,8 @@ export class Player {
     scene.add(this.cameraHelper);
 
     // Hide/show instructions based on pointer controls locking/unlocking
-    this.controls.addEventListener('lock', this.onCameraLock.bind(this));
-    this.controls.addEventListener('unlock', this.onCameraUnlock.bind(this));
+    this.controls.addEventListener("lock", this.onCameraLock.bind(this));
+    this.controls.addEventListener("unlock", this.onCameraUnlock.bind(this));
 
     // The tool is parented to the camera
     this.camera.add(this.tool.container);
@@ -70,31 +80,31 @@ export class Player {
     const selectionMaterial = new THREE.MeshBasicMaterial({
       transparent: true,
       opacity: 0.3,
-      color: 0xffffaa
+      color: 0xffffaa,
     });
     const selectionGeometry = new THREE.BoxGeometry(1.01, 1.01, 1.01);
     this.selectionHelper = new THREE.Mesh(selectionGeometry, selectionMaterial);
     scene.add(this.selectionHelper);
 
     // Add event listeners for keyboard/mouse events
-    document.addEventListener('keyup', this.onKeyUp.bind(this));
-    document.addEventListener('keydown', this.onKeyDown.bind(this));
-    document.addEventListener('mousedown', this.onMouseDown.bind(this));
+    document.addEventListener("keyup", this.onKeyUp.bind(this));
+    document.addEventListener("keydown", this.onKeyDown.bind(this));
+    document.addEventListener("mousedown", this.onMouseDown.bind(this));
   }
 
   onCameraLock() {
-    document.getElementById('overlay').style.visibility = 'hidden';
+    document.getElementById("overlay").style.visibility = "hidden";
   }
 
   onCameraUnlock() {
     if (!this.debugCamera) {
-      document.getElementById('overlay').style.visibility = 'visible';
+      document.getElementById("overlay").style.visibility = "visible";
     }
   }
 
   /**
    * Updates the state of the player
-   * @param {World} world 
+   * @param {World} world
    */
   update(world) {
     this.updateBoundsHelper();
@@ -107,7 +117,7 @@ export class Player {
 
   /**
    * Updates the raycaster used for block selection
-   * @param {World} world 
+   * @param {World} world
    */
   updateRaycaster(world) {
     this.raycaster.setFromCamera(CENTER_SCREEN, this.camera);
@@ -145,7 +155,7 @@ export class Player {
 
   /**
    * Updates the state of the player based on the current user inputs
-   * @param {Number} dt 
+   * @param {Number} dt
    */
   applyInputs(dt) {
     if (this.controls.isLocked === true) {
@@ -161,7 +171,7 @@ export class Player {
       }
     }
 
-    document.getElementById('info-player-position').innerHTML = this.toString();
+    document.getElementById("info-player-position").innerHTML = this.toString();
   }
 
   /**
@@ -174,7 +184,7 @@ export class Player {
 
   /**
    * Set the tool object the player is holding
-   * @param {THREE.Mesh} tool 
+   * @param {THREE.Mesh} tool
    */
   setTool(tool) {
     this.tool.container.clear();
@@ -193,7 +203,9 @@ export class Player {
    */
   updateToolAnimation() {
     if (this.tool.container.children.length > 0) {
-      const t = this.tool.animationSpeed * (performance.now() - this.tool.animationStart);
+      const t =
+        this.tool.animationSpeed *
+        (performance.now() - this.tool.animationStart);
       this.tool.container.children[0].rotation.y = 0.5 * Math.sin(t);
     }
   }
@@ -212,13 +224,15 @@ export class Player {
    */
   get worldVelocity() {
     this.#worldVelocity.copy(this.velocity);
-    this.#worldVelocity.applyEuler(new THREE.Euler(0, this.camera.rotation.y, 0));
+    this.#worldVelocity.applyEuler(
+      new THREE.Euler(0, this.camera.rotation.y, 0)
+    );
     return this.#worldVelocity;
   }
 
   /**
    * Applies a change in velocity 'dv' that is specified in the world frame
-   * @param {THREE.Vector3} dv 
+   * @param {THREE.Vector3} dv
    */
   applyWorldDeltaVelocity(dv) {
     dv.applyEuler(new THREE.Euler(0, -this.camera.rotation.y, 0));
@@ -227,7 +241,7 @@ export class Player {
 
   /**
    * Event handler for 'keyup' event
-   * @param {KeyboardEvent} event 
+   * @param {KeyboardEvent} event
    */
   onKeyDown(event) {
     if (!this.controls.isLocked) {
@@ -236,52 +250,56 @@ export class Player {
     }
 
     switch (event.code) {
-      case 'Digit0':
-      case 'Digit1':
-      case 'Digit2':
-      case 'Digit3':
-      case 'Digit4':
-      case 'Digit5':
-      case 'Digit6':
-      case 'Digit7':
-      case 'Digit8':
+      case "Digit0":
+      case "Digit1":
+      case "Digit2":
+      case "Digit3":
+      case "Digit4":
+      case "Digit5":
+      case "Digit6":
+      case "Digit7":
+      case "Digit8":
         // Update the selected toolbar icon
-        document.getElementById(`toolbar-${this.activeBlockId}`)?.classList.remove('selected');
-        document.getElementById(`toolbar-${event.key}`)?.classList.add('selected');
+        document
+          .getElementById(`toolbar-${this.activeBlockId}`)
+          ?.classList.remove("selected");
+        document
+          .getElementById(`toolbar-${event.key}`)
+          ?.classList.add("selected");
 
         this.activeBlockId = Number(event.key);
 
         // Update the pickaxe visibility
-        this.tool.container.visible = (this.activeBlockId === 0);
+        this.tool.container.visible = this.activeBlockId === 0;
 
         break;
-      case 'KeyW':
+      case "KeyW":
         this.input.z = this.maxSpeed;
         break;
-      case 'KeyA':
+      case "KeyA":
         this.input.x = -this.maxSpeed;
         break;
-      case 'KeyS':
+      case "KeyS":
         this.input.z = -this.maxSpeed;
         break;
-      case 'KeyD':
+      case "KeyD":
         this.input.x = this.maxSpeed;
         break;
-      case 'KeyR':
+      case "KeyR":
         if (this.repeat) break;
         this.position.y = 32;
         this.velocity.set(0, 0, 0);
         break;
-      case 'ShiftLeft':
-      case 'ShiftRight':
+      case "ShiftLeft":
+      case "ShiftRight":
         this.sprinting = true;
         break;
-      case 'Space':
+      case "Space":
         if (this.onGround) {
           this.velocity.y += this.jumpSpeed;
         }
         break;
-      case 'F10':
+      case "F10":
         this.debugCamera = true;
         this.controls.unlock();
         break;
@@ -290,24 +308,24 @@ export class Player {
 
   /**
    * Event handler for 'keyup' event
-   * @param {KeyboardEvent} event 
+   * @param {KeyboardEvent} event
    */
   onKeyUp(event) {
     switch (event.code) {
-      case 'KeyW':
+      case "KeyW":
         this.input.z = 0;
         break;
-      case 'KeyA':
+      case "KeyA":
         this.input.x = 0;
         break;
-      case 'KeyS':
+      case "KeyS":
         this.input.z = 0;
         break;
-      case 'KeyD':
+      case "KeyD":
         this.input.x = 0;
         break;
-      case 'ShiftLeft':
-      case 'ShiftRight':
+      case "ShiftLeft":
+      case "ShiftRight":
         this.sprinting = false;
         break;
     }
@@ -315,7 +333,7 @@ export class Player {
 
   /**
    * Event handler for 'mousedown'' event
-   * @param {MouseEvent} event 
+   * @param {MouseEvent} event
    */
   onMouseDown(event) {
     if (this.controls.isLocked) {
@@ -348,7 +366,7 @@ export class Player {
           // Stop the animation after 1.5 cycles
           this.tool.animation = setTimeout(() => {
             this.tool.animate = false;
-          }, 3 * Math.PI / this.tool.animationSpeed);
+          }, (3 * Math.PI) / this.tool.animationSpeed);
         }
       }
     }
@@ -359,7 +377,7 @@ export class Player {
    * @returns {string}
    */
   toString() {
-    let str = '';
+    let str = "";
     str += `X: ${this.position.x.toFixed(3)} `;
     str += `Y: ${this.position.y.toFixed(3)} `;
     str += `Z: ${this.position.z.toFixed(3)}`;

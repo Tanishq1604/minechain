@@ -1,11 +1,11 @@
-import * as THREE from 'three';
-import Stats from 'three/examples/jsm/libs/stats.module.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { World } from './world';
-import { Player } from './player';
-import { Physics } from './physics';
-import { setupUI } from './ui';
-import { ModelLoader } from './modelLoader';
+import * as THREE from "three";
+import Stats from "three/examples/jsm/libs/stats.module.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { World } from "./world";
+import { Player } from "./player";
+import { Physics } from "./physics";
+import { setupUI } from "./ui";
+import { ModelLoader } from "./modelLoader";
 
 // UI Setup
 const stats = new Stats();
@@ -32,7 +32,12 @@ const player = new Player(scene, world);
 const physics = new Physics(scene);
 
 // Camera setup
-const orbitCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const orbitCamera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
 orbitCamera.position.set(24, 24, 24);
 orbitCamera.layers.enable(1);
 
@@ -41,7 +46,7 @@ controls.update();
 
 const modelLoader = new ModelLoader((models) => {
   player.setTool(models.pickaxe);
-})
+});
 
 let sun;
 function setupLights() {
@@ -87,18 +92,23 @@ function animate() {
     sun.position.sub(new THREE.Vector3(-50, -50, -50));
     sun.target.position.copy(player.camera.position);
 
-    // Update positon of the orbit camera to track player 
-    orbitCamera.position.copy(player.position).add(new THREE.Vector3(16, 16, 16));
+    // Update positon of the orbit camera to track player
+    orbitCamera.position
+      .copy(player.position)
+      .add(new THREE.Vector3(16, 16, 16));
     controls.target.copy(player.position);
   }
 
-  renderer.render(scene, player.controls.isLocked ? player.camera : orbitCamera);
+  renderer.render(
+    scene,
+    player.controls.isLocked ? player.camera : orbitCamera
+  );
   stats.update();
 
   previousTime = currentTime;
 }
 
-window.addEventListener('resize', () => {
+window.addEventListener("resize", () => {
   // Resize camera aspect ratio and renderer size to the new window size
   orbitCamera.aspect = window.innerWidth / window.innerHeight;
   orbitCamera.updateProjectionMatrix();

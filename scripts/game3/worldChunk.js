@@ -1,17 +1,17 @@
-import * as THREE from 'three';
-import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise.js';
-import { RNG } from './rng';
-import { blocks, resources } from './blocks';
+import * as THREE from "three";
+import { SimplexNoise } from "three/examples/jsm/math/SimplexNoise.js";
+import { RNG } from "./rng";
+import { blocks, resources } from "./blocks";
 
 const geometry = new THREE.BoxGeometry();
 
 export class WorldChunk extends THREE.Group {
   /**
-    * @type {{
-    *  id: number,
-    *  instanceId: number
-    * }[][][]}
-  */
+   * @type {{
+   *  id: number,
+   *  instanceId: number
+   * }[][][]}
+   */
   data = [];
 
   constructor(size, params, dataStore) {
@@ -23,8 +23,8 @@ export class WorldChunk extends THREE.Group {
   }
 
   /**
-    * Generates the world data and meshes
-    */
+   * Generates the world data and meshes
+   */
   generate() {
     const start = performance.now();
 
@@ -41,8 +41,8 @@ export class WorldChunk extends THREE.Group {
   }
 
   /**
-    * Initializes an empty world
-    */
+   * Initializes an empty world
+   */
   initializeTerrain() {
     this.data = [];
     for (let x = 0; x < this.size.width; x++) {
@@ -52,7 +52,7 @@ export class WorldChunk extends THREE.Group {
         for (let z = 0; z < this.size.width; z++) {
           row.push({
             id: blocks.empty.id,
-            instanceId: null
+            instanceId: null,
           });
         }
         slice.push(row);
@@ -63,29 +63,34 @@ export class WorldChunk extends THREE.Group {
 
   /**
    * Get the biome at the local chunk coordinates (x,z)
-   * @param {SimplexNoise} simplex 
-   * @param {number} x 
-   * @param {number} z 
+   * @param {SimplexNoise} simplex
+   * @param {number} x
+   * @param {number} z
    */
   getBiome(simplex, x, z) {
-    let noise = 0.5 * simplex.noise(
-      (this.position.x + x) / this.params.biomes.scale,
-      (this.position.z + z) / this.params.biomes.scale
-    ) + 0.5;
+    let noise =
+      0.5 *
+        simplex.noise(
+          (this.position.x + x) / this.params.biomes.scale,
+          (this.position.z + z) / this.params.biomes.scale
+        ) +
+      0.5;
 
-    noise += this.params.biomes.variation.amplitude * (simplex.noise(
-      (this.position.x + x) / this.params.biomes.variation.scale,
-      (this.position.z + z) / this.params.biomes.variation.scale
-    ));
+    noise +=
+      this.params.biomes.variation.amplitude *
+      simplex.noise(
+        (this.position.x + x) / this.params.biomes.variation.scale,
+        (this.position.z + z) / this.params.biomes.variation.scale
+      );
 
     if (noise < this.params.biomes.tundraToTemperate) {
-      return 'Tundra';
+      return "Tundra";
     } else if (noise < this.params.biomes.temperateToJungle) {
-      return 'Temperate';
+      return "Temperate";
     } else if (noise < this.params.biomes.jungleToDesert) {
-      return 'Jungle';
+      return "Jungle";
     } else {
-      return 'Desert';
+      return "Desert";
     }
   }
 
@@ -105,8 +110,8 @@ export class WorldChunk extends THREE.Group {
         );
 
         // Scale the noise based on the magnitude/offset
-        const scaledNoise = this.params.terrain.offset +
-          this.params.terrain.magnitude * value;
+        const scaledNoise =
+          this.params.terrain.offset + this.params.terrain.magnitude * value;
 
         // Computing the height of the terrain at this x-z location
         let height = Math.floor(scaledNoise);
@@ -120,13 +125,13 @@ export class WorldChunk extends THREE.Group {
             this.setBlockId(x, y, z, blocks.sand.id);
           } else if (y === height) {
             let groundBlockType;
-            if (biome === 'Desert') {
+            if (biome === "Desert") {
               groundBlockType = blocks.sand.id;
-            } else if (biome === 'Temperate' || biome === 'Jungle') {
+            } else if (biome === "Temperate" || biome === "Jungle") {
               groundBlockType = blocks.grass.id;
-            } else if (biome === 'Tundra') {
+            } else if (biome === "Tundra") {
               groundBlockType = blocks.snow.id;
-            } else if (biome === 'Jungle') {
+            } else if (biome === "Jungle") {
               groundBlockType = blocks.jungleGrass.id;
             }
 
@@ -136,7 +141,10 @@ export class WorldChunk extends THREE.Group {
             if (rng.random() < this.params.trees.frequency) {
               this.generateTree(rng, biome, x, height + 1, z);
             }
-          } else if (y < height && this.getBlock(x, y, z).id === blocks.empty.id) {
+          } else if (
+            y < height &&
+            this.getBlock(x, y, z).id === blocks.empty.id
+          ) {
             this.generateResourceIfNeeded(simplex, x, y, z);
           }
         }
@@ -146,18 +154,19 @@ export class WorldChunk extends THREE.Group {
 
   /**
    * Determines if a resource block should be generated at (x, y, z)
-   * @param {SimplexNoise} simplex 
-   * @param {number} x 
-   * @param {number} y 
-   * @param {number} z 
+   * @param {SimplexNoise} simplex
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
    */
   generateResourceIfNeeded(simplex, x, y, z) {
     this.setBlockId(x, y, z, blocks.dirt.id);
-    resources.forEach(resource => {
+    resources.forEach((resource) => {
       const value = simplex.noise3d(
         (this.position.x + x) / resource.scale.x,
         (this.position.y + y) / resource.scale.y,
-        (this.position.z + z) / resource.scale.z);
+        (this.position.z + z) / resource.scale.z
+      );
 
       if (value > resource.scarcity) {
         this.setBlockId(x, y, z, resource.id);
@@ -178,17 +187,17 @@ export class WorldChunk extends THREE.Group {
     const h = Math.round(minH + (maxH - minH) * rng.random());
 
     for (let treeY = y; treeY < y + h; treeY++) {
-      if (biome === 'Temperate' || biome === 'Tundra') {
+      if (biome === "Temperate" || biome === "Tundra") {
         this.setBlockId(x, treeY, z, blocks.tree.id);
-      } else if (biome === 'Jungle') {
+      } else if (biome === "Jungle") {
         this.setBlockId(x, treeY, z, blocks.jungleTree.id);
-      } else if (biome === 'Desert') {
+      } else if (biome === "Desert") {
         this.setBlockId(x, treeY, z, blocks.cactus.id);
       }
     }
 
     // Generate canopy centered on the top of the tree
-    if (biome === 'Temperate' || biome === 'Jungle') {
+    if (biome === "Temperate" || biome === "Jungle") {
       this.generateTreeCanopy(biome, x, y + h, z, rng);
     }
   }
@@ -210,10 +219,20 @@ export class WorldChunk extends THREE.Group {
           if (block && block.id !== blocks.empty.id) continue;
           // Fill in the tree canopy with leaves based on the density parameter
           if (n < this.params.trees.canopy.density) {
-            if (biome === 'Temperate') {
-              this.setBlockId(centerX + x, centerY + y, centerZ + z, blocks.leaves.id);
-            } else if (biome === 'Jungle') {
-              this.setBlockId(centerX + x, centerY + y, centerZ + z, blocks.jungleLeaves.id);
+            if (biome === "Temperate") {
+              this.setBlockId(
+                centerX + x,
+                centerY + y,
+                centerZ + z,
+                blocks.leaves.id
+              );
+            } else if (biome === "Jungle") {
+              this.setBlockId(
+                centerX + x,
+                centerY + y,
+                centerZ + z,
+                blocks.jungleLeaves.id
+              );
             }
           }
         }
@@ -223,16 +242,19 @@ export class WorldChunk extends THREE.Group {
 
   /**
    * Creates happy little clouds
-   * @param {RNG} rng 
+   * @param {RNG} rng
    */
   generateClouds(rng) {
     const simplex = new SimplexNoise(rng);
     for (let x = 0; x < this.size.width; x++) {
       for (let z = 0; z < this.size.width; z++) {
-        const value = (simplex.noise(
-          (this.position.x + x) / this.params.clouds.scale,
-          (this.position.z + z) / this.params.clouds.scale
-        ) + 1) * 0.5;
+        const value =
+          (simplex.noise(
+            (this.position.x + x) / this.params.clouds.scale,
+            (this.position.z + z) / this.params.clouds.scale
+          ) +
+            1) *
+          0.5;
 
         if (value < this.params.clouds.density) {
           this.setBlockId(x, this.size.height - 1, z, blocks.cloud.id);
@@ -248,8 +270,16 @@ export class WorldChunk extends THREE.Group {
     for (let x = 0; x < this.size.width; x++) {
       for (let y = 0; y < this.size.height; y++) {
         for (let z = 0; z < this.size.width; z++) {
-          if (this.dataStore.contains(this.position.x, this.position.z, x, y, z)) {
-            const blockId = this.dataStore.get(this.position.x, this.position.z, x, y, z);
+          if (
+            this.dataStore.contains(this.position.x, this.position.z, x, y, z)
+          ) {
+            const blockId = this.dataStore.get(
+              this.position.x,
+              this.position.z,
+              x,
+              y,
+              z
+            );
             this.setBlockId(x, y, z, blockId);
           }
         }
@@ -262,7 +292,7 @@ export class WorldChunk extends THREE.Group {
       color: 0x9090e0,
       transparent: true,
       opacity: 0.5,
-      side: THREE.DoubleSide
+      side: THREE.DoubleSide,
     });
 
     const waterMesh = new THREE.Mesh(new THREE.PlaneGeometry(), material);
@@ -279,8 +309,8 @@ export class WorldChunk extends THREE.Group {
   }
 
   /**
-    * Generates the 3D representation of the world from the world data
-    */
+   * Generates the 3D representation of the world from the world data
+   */
   generateMeshes() {
     this.clear();
 
@@ -291,9 +321,13 @@ export class WorldChunk extends THREE.Group {
     // Creating a lookup table where the key is the block id
     const meshes = {};
     Object.values(blocks)
-      .filter(blockType => blockType.id !== blocks.empty.id)
-      .forEach(blockType => {
-        const mesh = new THREE.InstancedMesh(geometry, blockType.material, maxCount);
+      .filter((blockType) => blockType.id !== blocks.empty.id)
+      .forEach((blockType) => {
+        const mesh = new THREE.InstancedMesh(
+          geometry,
+          blockType.material,
+          maxCount
+        );
         mesh.name = blockType.id;
         mesh.count = 0;
         mesh.castShadow = true;
@@ -326,12 +360,12 @@ export class WorldChunk extends THREE.Group {
   }
 
   /**
-  * Gets the block data at (x, y, z)
-  * @param {number} x
-  * @param {number} y
-  * @param {number} z
-  * @returns {{id: number, instanceId: number}}
-  */
+   * Gets the block data at (x, y, z)
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
+   * @returns {{id: number, instanceId: number}}
+   */
   getBlock(x, y, z) {
     if (this.inBounds(x, y, z)) {
       return this.data[x][y][z];
@@ -342,10 +376,10 @@ export class WorldChunk extends THREE.Group {
 
   /**
    * Adds a new block at (x,y,z) of type `blockId`
-   * @param {number} x 
-   * @param {number} y 
-   * @param {number} z 
-   * @param {number} blockId 
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
+   * @param {number} blockId
    */
   addBlock(x, y, z, blockId) {
     if (this.getBlock(x, y, z).id === blocks.empty.id) {
@@ -357,25 +391,32 @@ export class WorldChunk extends THREE.Group {
 
   /**
    * Removes the block at (x, y, z)
-   * @param {number} x 
-   * @param {number} y 
-   * @param {number} z 
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
    */
   removeBlock(x, y, z) {
     const block = this.getBlock(x, y, z);
     if (block && block.id !== blocks.empty.id) {
       this.deleteBlockInstance(x, y, z);
       this.setBlockId(x, y, z, blocks.empty.id);
-      this.dataStore.set(this.position.x, this.position.z, x, y, z, blocks.empty.id);
+      this.dataStore.set(
+        this.position.x,
+        this.position.z,
+        x,
+        y,
+        z,
+        blocks.empty.id
+      );
     }
   }
 
   /**
    * Removes the mesh instance associated with `block` by swapping it
    * with the last instance and decrementing the instance count.
-   * @param {number} x 
-   * @param {number} y 
-   * @param {number} z 
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
    */
   deleteBlockInstance(x, y, z) {
     const block = this.getBlock(x, y, z);
@@ -383,7 +424,9 @@ export class WorldChunk extends THREE.Group {
     if (block.id === blocks.empty.id || block.instanceId === null) return;
 
     // Get the mesh and instance id of the block
-    const mesh = this.children.find((instanceMesh) => instanceMesh.name === block.id);
+    const mesh = this.children.find(
+      (instanceMesh) => instanceMesh.name === block.id
+    );
     const instanceId = block.instanceId;
 
     // Swapping the transformation matrix of the block in the last position
@@ -413,9 +456,9 @@ export class WorldChunk extends THREE.Group {
 
   /**
    * Create a new instance for the block at (x,y,z)
-   * @param {number} x 
-   * @param {number} y 
-   * @param {number} z 
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
    */
   addBlockInstance(x, y, z) {
     const block = this.getBlock(x, y, z);
@@ -423,7 +466,9 @@ export class WorldChunk extends THREE.Group {
     // Verify the block exists, it isn't an empty block type, and it doesn't already have an instance
     if (block && block.id !== blocks.empty.id && block.instanceId === null) {
       // Get the mesh and instance id of the block
-      const mesh = this.children.find((instanceMesh) => instanceMesh.name === block.id);
+      const mesh = this.children.find(
+        (instanceMesh) => instanceMesh.name === block.id
+      );
       const instanceId = mesh.count++;
       this.setBlockInstanceId(x, y, z, instanceId);
 
@@ -437,26 +482,25 @@ export class WorldChunk extends THREE.Group {
   }
 
   /**
-    * Sets the block id for the block at (x, y, z)
-    * @param {number} x
-    * @param {number} y
-    * @param {number} z
-    * @param {number} id
-    */
+   * Sets the block id for the block at (x, y, z)
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
+   * @param {number} id
+   */
   setBlockId(x, y, z, id) {
     if (this.inBounds(x, y, z)) {
       this.data[x][y][z].id = id;
     }
   }
 
-
   /**
-    * Sets the block instance id for the block at (x, y, z)
-    * @param {number} x
-    * @param {number} y
-    * @param {number} z
-    * @param {number} instanceId
-    */
+   * Sets the block instance id for the block at (x, y, z)
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
+   * @param {number} instanceId
+   */
   setBlockInstanceId(x, y, z, instanceId) {
     if (this.inBounds(x, y, z)) {
       this.data[x][y][z].instanceId = instanceId;
@@ -464,16 +508,21 @@ export class WorldChunk extends THREE.Group {
   }
 
   /**
-    * Checks if the (x, y, z) coordinates are within bounds
-    * @param {number} x
-    * @param {number} y
-    * @param {number} z
-    * @returns {boolean}
-    */
+   * Checks if the (x, y, z) coordinates are within bounds
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
+   * @returns {boolean}
+   */
   inBounds(x, y, z) {
-    if (x >= 0 && x < this.size.width &&
-      y >= 0 && y < this.size.height &&
-      z >= 0 && z < this.size.width) {
+    if (
+      x >= 0 &&
+      x < this.size.width &&
+      y >= 0 &&
+      y < this.size.height &&
+      z >= 0 &&
+      z < this.size.width
+    ) {
       return true;
     } else {
       return false;
@@ -481,12 +530,12 @@ export class WorldChunk extends THREE.Group {
   }
 
   /**
-    * Returns true if this block is completely hidden by other blocks
-    * @param {number} x
-    * @param {number} y
-    * @param {number} z
-    * @returns {boolean}
-    */
+   * Returns true if this block is completely hidden by other blocks
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
+   * @returns {boolean}
+   */
   isBlockObscured(x, y, z) {
     const up = this.getBlock(x, y + 1, z)?.id ?? blocks.empty.id;
     const down = this.getBlock(x, y - 1, z)?.id ?? blocks.empty.id;
@@ -496,12 +545,14 @@ export class WorldChunk extends THREE.Group {
     const back = this.getBlock(x, y, z - 1)?.id ?? blocks.empty.id;
 
     // If any of the block's sides is exposed, it is not obscured
-    if (up === blocks.empty.id ||
+    if (
+      up === blocks.empty.id ||
       down === blocks.empty.id ||
       left === blocks.empty.id ||
       right === blocks.empty.id ||
       forward === blocks.empty.id ||
-      back === blocks.empty.id) {
+      back === blocks.empty.id
+    ) {
       return false;
     } else {
       return true;
