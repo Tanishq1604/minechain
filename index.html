@@ -32,7 +32,7 @@
   </div>
   <div id="overlay">
     <div id="instructions">
-      <h1>MINECRAFTjs</h1>
+      <h1>MINECHAIN</h1>
       WASD - Move<br>
       SHIFT - Sprint<br>
       SPACE - Jump<br>
@@ -46,9 +46,17 @@
       <h2>PRESS ANY KEY TO START</h2>
     </div>
   </div>
-  <div id="status"></div>
-  <button id="openModalBtn"><img src="./public/images/InventoryIcon.svg" alt="Inventory Icon"></button>
 
+  <div id="status"></div>
+  <button id="openModalBtn"><img src="images/InventoryIcon.svg" alt="Inventory Icon"></button>
+
+  <!-- <div id="status"></div> -->
+  <button id="myButton" >Connect Wallet</button>
+  <button id="marketButton" >5</button>
+  <div id="popup" >Connected to Frieghter wallet!</div>
+  
+  
+  
   <!-- The Modal -->
   <div id="marketplaceModal" class="modal">
     <!-- Modal content -->
@@ -82,7 +90,10 @@
       </div>
     </div>
   </div>
-
+  
+  <script type="module" src="./scripts/web3/connect_wallet.js"></script>
+  <script type="module" src="./scripts/web3/market_button.js"></script>
+  <script type="module" src="./scripts/web3/try.ts"></script>
   <script type="module" src="./scripts/game3/main.js"></script>
   <script type="module" src="./marketplace.js"></script>
 </body>
