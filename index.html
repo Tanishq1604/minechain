@@ -29,12 +29,12 @@
   </div>
   <div id="overlay">
     <div id="instructions">
-      <h1>MINECRAFTjs</h1>
+      <h1>MINECHAIN</h1>
       WASD - Move<br>
       SHIFT - Sprint<br>
       SPACE - Jump<br>
       R - Reset Camera<br>
-      U - Toggle UI
+      U - Toggle UI<br>
       0 - Pickaxe<br>
       1-8 - Select Block<br>
       F1 - Save Game<br>
@@ -43,7 +43,13 @@
       <h2>PRESS ANY KEY TO START</h2>
     </div>
   </div>
-  <div id="status"></div>
+  <!-- <div id="status"></div> -->
+  <button id="myButton" >Connect Wallet</button>
+  <button id="marketButton" >5</button>
+  <div id="popup" >Connected to Frieghter wallet!</div>
+  <script type="module" src="./scripts/web3/connect_wallet.js"></script>
+  <script type="module" src="./scripts/web3/market_button.js"></script>
+  <script type="module" src="./scripts/web3/try.ts"></script>
   <script type="module" src="./scripts/game3/main.js"></script>
 </body>
 
