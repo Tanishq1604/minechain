@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -8,7 +7,6 @@
   <title>Minecraft.js</title>
   <link rel="stylesheet" href="./style.css">
 </head>
-
 <body>
   <div id="app"></div>
   <div id="crosshair" class="clickable"></div>
@@ -17,15 +15,19 @@
   </div>
   <div id="toolbar-container">
     <div id="toolbar">
-      <img class="toolbar-icon" id="toolbar-1" src="textures/grass.png"></img>
-      <img class="toolbar-icon" id="toolbar-2" src="textures/dirt.png"></img>
-      <img class="toolbar-icon" id="toolbar-3" src="textures/stone.png"></img>
-      <img class="toolbar-icon" id="toolbar-4" src="textures/coal_ore.png"></img>
-      <img class="toolbar-icon" id="toolbar-5" src="textures/iron_ore.png"></img>
-      <img class="toolbar-icon" id="toolbar-6" src="textures/tree_top.png"></img>
-      <img class="toolbar-icon" id="toolbar-7" src="textures/leaves.png"></img>
-      <img class="toolbar-icon" id="toolbar-8" src="textures/sand.png"></img>
-      <img class="toolbar-icon selected" id="toolbar-0" src="textures/pickaxe.png"></img>
+      <img class="toolbar-icon" id="toolbar-1" src="textures/grass.png" alt="Grass Block" data-purchased="true"></img>
+      <img class="toolbar-icon" id="toolbar-2" src="textures/dirt.png" alt="Dirt Block" data-purchased="true"></img>
+      <img class="toolbar-icon" id="toolbar-3" src="textures/stone.png" alt="Stone Block" data-purchased="true"></img>
+      <img class="toolbar-icon" id="toolbar-4" src="textures/coal_ore.png" alt="Coal Ore Block" data-purchased="true"></img>
+      <img class="toolbar-icon" id="toolbar-5" src="textures/iron_ore.png" alt="Iron Ore Block" data-purchased="true"></img>
+      <img class="toolbar-icon" id="toolbar-6" src="textures/tree_top.png" alt="Tree Top Block" data-purchased="true"></img>
+      <img class="toolbar-icon" id="toolbar-7" src="textures/leaves.png" alt="Leaves Block" data-purchased="true"></img>
+      <img class="toolbar-icon" id="toolbar-8" src="textures/sand.png" alt="Sand Block" data-purchased="true"></img>
+      <img class="toolbar-icon" id="toolbar-9" src="images/MushroomStewNew.webp" alt="Blaze Rod" data-purchased="false" style="display:none;"></img>
+      <img class="toolbar-icon" id="toolbar-10" src="images/New_DiamondB.webp" alt="Mushroom Stew" data-purchased="false" style="display:none;"></img>
+      <img class="toolbar-icon" id="toolbar-11" src="images/WoolColorsNew.webp" alt="Warped Stem" data-purchased="false" style="display:none;"></img>
+      <img class="toolbar-icon" id="toolbar-12" src="images/WarpedStem.webp" alt="Wool" data-purchased="false" style="display:none;"></img>
+      <img class="toolbar-icon selected" id="toolbar-0" src="textures/pickaxe.png" alt="Pickaxe" data-purchased="true"></img>
     </div>
   </div>
   <div id="overlay">
@@ -35,7 +37,7 @@
       SHIFT - Sprint<br>
       SPACE - Jump<br>
       R - Reset Camera<br>
-      U - Toggle UI
+      U - Toggle UI<br>
       0 - Pickaxe<br>
       1-8 - Select Block<br>
       F1 - Save Game<br>
@@ -45,47 +47,43 @@
     </div>
   </div>
   <div id="status"></div>
-  <button id="openModalBtn" ><img src="./public/images/InventoryIcon.svg" alt="bG"></button>
+  <button id="openModalBtn"><img src="./public/images/InventoryIcon.svg" alt="Inventory Icon"></button>
 
-<!-- The Modal -->
-<div id="marketplaceModal" class="modal">
-
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <div class="marketplace">
-      <div class="item" data-name="Blaze Rod" data-price="10 Gold" data-description="A powerful item used in brewing and crafting." data-image="images/Blaze_Rod.webp">
+  <!-- The Modal -->
+  <div id="marketplaceModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div class="marketplace">
+        <div class="item" data-name="Blaze Rod" data-price="10 Gold" data-description="A powerful item used in brewing and crafting." data-id="9" data-image="images/Blaze_Rod.webp">
           <img src="images/New_DiamondB.webp" alt="Blaze Rod">
           <div class="price">10 Gold</div>
           <div class="description">A powerful item used in brewing and crafting.</div>
-          <div class="tooltip">Diamond egg: Used in brewing and crafting.</div>
-      </div>
-      <div class="item" data-name="Mushroom Stew" data-price="5 Gold" data-description="A nutritious stew made from mushrooms." data-image="images/MushroomStewNew.webp">
+          <div class="tooltip">Diamond: Used in brewing and crafting.</div>
+        </div>
+        <div class="item" data-name="Mushroom Stew" data-price="5 Gold" data-description="A nutritious stew made from mushrooms." data-id="10" data-image="images/MushroomStewNew.webp">
           <img src="images/MushroomStewNew.webp" alt="Mushroom Stew">
           <div class="price">5 Gold</div>
           <div class="description">A nutritious stew made from mushrooms.</div>
           <div class="tooltip">Mushroom Stew: Nutritious food item.</div>
-      </div>
-      <div class="item" data-name="Warped Stem" data-price="8 Gold" data-description="A unique wood block from the Nether." data-image="images/WarpedStem.webp">
+        </div>
+        <div class="item" data-name="Warped Stem" data-price="8 Gold" data-description="A unique wood block from the Nether." data-id="11" data-image="images/WarpedStem.webp">
           <img src="images/WarpedStem.webp" alt="Warped Stem">
           <div class="price">8 Gold</div>
           <div class="description">A unique wood block from the Nether.</div>
           <div class="tooltip">Warped Stem: Wood block from the Nether.</div>
-      </div>
-      <div class="item" data-name="Wool" data-price="2 Gold" data-description="Versatile block used for building and crafting." data-image="images/WoolColorsNew.webp">
+        </div>
+        <div class="item" data-name="Wool" data-price="2 Gold" data-description="Versatile block used for building and crafting." data-id="12" data-image="images/WoolColorsNew.webp">
           <img src="images/WoolColorsNew.webp" alt="Wool">
           <div class="price">2 Gold</div>
           <div class="description">Versatile block used for building and crafting.</div>
           <div class="tooltip">Wool: Used for building and crafting.</div>
+        </div>
       </div>
+    </div>
   </div>
-
-  </div>
-
-</div>
 
   <script type="module" src="./scripts/game3/main.js"></script>
   <script type="module" src="./marketplace.js"></script>
 </body>
-
 </html>

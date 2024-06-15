@@ -35,7 +35,7 @@ export class Player {
         3
     );
     selectedCoords = null;
-    activeBlockId = blocks.empty.id;
+    _activeBlockId = blocks.empty.id;
 
     tool = {
         // Group that will contain the tool mesh
@@ -49,6 +49,24 @@ export class Player {
         // Reference to the current animation
         animation: null,
     };
+
+    set activeBlockId(blockName) {
+        this._activeBlockId = blockName;
+        this.updateTool();
+    }
+
+    get activeBlockId() {
+        return this._activeBlockId;
+    }
+
+    updateTool() {
+        // Logic to update the tool based on the active block ID
+        if (this._activeBlockId === "blazeRod") {
+            this.setTool(createBlazeRodTool());
+        } else {
+            this.tool.container.visible = false;
+        }
+    }
 
     constructor(scene, world) {
         this.world = world;
@@ -90,10 +108,19 @@ export class Player {
         document.addEventListener("keyup", this.onKeyUp.bind(this));
         document.addEventListener("keydown", this.onKeyDown.bind(this));
         document.addEventListener("mousedown", this.onMouseDown.bind(this));
-        
+
         // Add event listener for crosshair click
         const crosshair = document.getElementById("crosshair");
         crosshair.addEventListener("click", this.onCrosshairClick.bind(this));
+
+        // Add event listeners for marketplace items
+        const marketplaceItems = document.querySelectorAll(".marketplace-item");
+        marketplaceItems.forEach(item => {
+            item.addEventListener("click", (event) => {
+                const blockId = event.target.dataset.blockId;
+                this.activeBlockId = blockId;
+            });
+        });
     }
 
     onCameraLock() {
@@ -246,7 +273,7 @@ export class Player {
     }
 
     /**
-     * Event handler for 'keyup' event
+     * Event handler for 'keydown' event
      * @param {KeyboardEvent} event
      */
     onKeyDown(event) {
@@ -279,6 +306,21 @@ export class Player {
                 this.tool.container.visible = this.activeBlockId === 0;
 
                 break;
+
+            // Handle marketplace item selection with letter keys
+            case "KeyB": // Blaze Rod
+                this.activeBlockId = "blazeRod";
+                break;
+            case "Keyf": // Mushroom Stew
+                this.activeBlockId = "mushroomStew";
+                break;
+            case "Keyv": // Warped Stem
+                this.activeBlockId = "warpedStem";
+                break;
+            case "KeyL": // Wool
+                this.activeBlockId = "wool";
+                break;
+
             case "KeyW":
                 this.input.z = this.maxSpeed;
                 break;
