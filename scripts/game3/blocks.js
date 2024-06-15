@@ -28,6 +28,10 @@ const textures = {
   snow: loadTexture('textures/snow.png'),
   snowSide: loadTexture('textures/snow_side.png'),
   stone: loadTexture('textures/stone.png'),
+  blazeRod: loadTexture('images/New_DiamondB.webp'),  // Assuming there's a blaze_rod texture
+  mushroomStew: loadTexture('images/mushroomStewNew.webp'), // Assuming there's a mushroom_stew texture
+  warpedStem: loadTexture('images/warpedStem.webp'), // Assuming there's a warped_stem texture
+  wool: loadTexture('images/woolColorsNew.webp'), // Assuming there's a wool texture
 };
 
 export const blocks = {
@@ -157,6 +161,26 @@ export const blocks = {
       new THREE.MeshLambertMaterial({ color: 0x80c080, map: textures.grassSide }), // front
       new THREE.MeshLambertMaterial({ color: 0x80c080, map: textures.grassSide })  // back
     ]
+  },
+  blazeRod: {
+    id: 15,
+    name: 'blazeRod',
+    material: new THREE.MeshLambertMaterial({ map: textures.blazeRod })
+  },
+  mushroomStew: {
+    id: 16,
+    name: 'mushroomStew',
+    material: new THREE.MeshLambertMaterial({ map: textures.mushroomStew })
+  },
+  warpedStem: {
+    id: 17,
+    name: 'warpedStem',
+    material: new THREE.MeshLambertMaterial({ map: textures.warpedStem })
+  },
+  wool: {
+    id: 18,
+    name: 'wool',
+    material: new THREE.MeshLambertMaterial({ map: textures.wool })
   },
 };
 

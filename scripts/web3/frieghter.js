@@ -1,5 +1,8 @@
 import {
-    requestAccess,
+
+  getPublicKey,
+
+
     signTransaction,
     setAllowed,
 } from "@stellar/freighter-api";
@@ -15,7 +18,9 @@ const retrievePublicKey = async () => {
     let publicKey = "";
     let error = "";
     try {
-        publicKey = await requestAccess();
+
+        publicKey = await getPublicKey();
+
     } catch (e) {
         error = e;
     }
