@@ -20,6 +20,15 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
+
+
+
+
+
+
+
+
+
 // Scene setup
 const scene = new THREE.Scene();
 scene.fog = new THREE.Fog(0x80a0e0, 50, 75);
