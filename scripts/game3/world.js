@@ -199,9 +199,9 @@ export class World extends THREE.Group {
     for (const chunk of chunksToRemove) {
       chunk.disposeInstances();
       this.remove(chunk);
-      console.log(
-        `Removing chunk at X: ${chunk.userData.x} Z: ${chunk.userData.z}`
-      );
+      // console.log(
+      //   `Removing chunk at X: ${chunk.userData.x} Z: ${chunk.userData.z}`
+      // );
     }
   }
 
@@ -222,7 +222,7 @@ export class World extends THREE.Group {
     }
 
     this.add(chunk);
-    console.log(`Adding chunk at X: ${x} Z: ${z}`);
+    // console.log(`Adding chunk at X: ${x} Z: ${z}`);
   }
 
   /**
@@ -340,14 +340,6 @@ export class World extends THREE.Group {
       this.revealBlock(x, y, z + 1);
     }
   }
-
-
-
-
-
-
-
-  git 
   /**
    * Reveals the block at (x,y,z) by adding a new mesh instance
    * @param {number} x

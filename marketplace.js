@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
     marketplaceItems.forEach(item => {
         item.addEventListener("click", (event) => {
             const blockId = event.target.dataset.blockId;
-            console.log(blockId);
-            this.activeBlockId = blockId;
+            // console.log(blockId);
+            // this.activeBlockId = blockId;
     
             // Show the purchased item in the toolbar
             const toolbarItem = document.getElementById(`toolbar-${blockId}`);
