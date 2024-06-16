@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   
+
     const items = document.querySelectorAll('.marketplace .item');
   
     items.forEach(item => {
@@ -35,5 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .forEach((el) => el.classList.remove("selected"));
         toolbarItem?.classList.add("selected");
       });
+
     });
   });
