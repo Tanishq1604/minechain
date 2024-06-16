@@ -341,6 +341,13 @@ export class World extends THREE.Group {
     }
   }
 
+
+
+
+
+
+
+  git 
   /**
    * Reveals the block at (x,y,z) by adding a new mesh instance
    * @param {number} x
