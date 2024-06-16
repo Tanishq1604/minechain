@@ -54,11 +54,8 @@
 
   <!-- <div id="status"></div> -->
   <button id="myButton" >Connect Wallet</button>
-  <button id="marketButton" >5</button>
   <div id="popup" >Connected to Frieghter wallet!</div>
 
-  
-  
   
   <!-- The Modal -->
   <div id="marketplaceModal" class="modal">
@@ -66,27 +63,29 @@
     <div class="modal-content">
       <span class="close">&times;</span>
       <div class="marketplace">
-        <div class="item" data-name="Blaze Rod" data-price="10 Gold" data-description="A powerful item used in brewing and crafting." data-id="9" data-image="images/Blaze_Rod.webp">
+        <div class="item" data-name="Blaze Rod" data-price="100 Gold" data-description="A powerful item used in brewing and crafting." data-id="9" data-image="images/Blaze_Rod.webp">
           <img src="images/New_DiamondB.webp" alt="Blaze Rod">
-          <div class="price">10 Gold</div>
+          <div class="price">100 Gold</div>
           <div class="description">A powerful item used in brewing and crafting.</div>
           <div class="tooltip">Diamond: Used in brewing and crafting.</div>
         </div>
-        <div class="item" data-name="Mushroom Stew" data-price="5 Gold" data-description="A nutritious stew made from mushrooms." data-id="10" data-image="images/MushroomStewNew.webp">
+
+        <div class="item" data-name="Mushroom Stew" data-price="5100 Gold" data-description="A nutritious stew made from mushrooms." data-id="10" data-image="images/MushroomStewNew.webp">
           <img src="images/MushroomStewNew.webp" alt="Mushroom Stew">
-          <div class="price">5 Gold</div>
+          <div class="price">5100 Gold</div>
+
           <div class="description">A nutritious stew made from mushrooms.</div>
           <div class="tooltip">Mushroom Stew: Nutritious food item.</div>
         </div>
-        <div class="item" data-name="Warped Stem" data-price="8 Gold" data-description="A unique wood block from the Nether." data-id="11" data-image="images/WarpedStem.webp">
+        <div class="item" data-name="Warped Stem" data-price="80 Gold" data-description="A unique wood block from the Nether." data-id="11" data-image="images/WarpedStem.webp">
           <img src="images/WarpedStem.webp" alt="Warped Stem">
-          <div class="price">8 Gold</div>
+          <div class="price">80 Gold</div>
           <div class="description">A unique wood block from the Nether.</div>
           <div class="tooltip">Warped Stem: Wood block from the Nether.</div>
         </div>
-        <div class="item" data-name="Wool" data-price="2 Gold" data-description="Versatile block used for building and crafting." data-id="12" data-image="images/WoolColorsNew.webp">
+        <div class="item" data-name="Wool" data-price="200 Gold" data-description="Versatile block used for building and crafting." data-id="12" data-image="images/WoolColorsNew.webp">
           <img src="images/WoolColorsNew.webp" alt="Wool">
-          <div class="price">2 Gold</div>
+          <div class="price">200 Gold</div>
           <div class="description">Versatile block used for building and crafting.</div>
           <div class="tooltip">Wool: Used for building and crafting.</div>
         </div>
@@ -96,8 +95,9 @@
   
 
   <script type="module" src="./scripts/web3/connect_wallet.js"></script>
-  <script type="module" src="./scripts/web3/market_button.js"></script>
-  <script type="module" src="./scripts/web3/try.ts"></script>
+  <script type="module" src="./scripts/web3/timer_payment.js"></script>
+  <script type="module" src="./scripts/web3/transaction.js"></script>
+
   <script type="module" src="./scripts/game3/main.js"></script>
   <script type="module" src="./marketplace.js"></script>
 </body>

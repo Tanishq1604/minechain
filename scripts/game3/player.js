@@ -4,21 +4,6 @@ import { World } from "./world";
 import { blocks } from "./blocks";
 
 const CENTER_SCREEN = new THREE.Vector2();
-const keyToBlockId = {
-  Digit1: "1", // Grass Block
-  Digit2: "2", // Dirt Block
-  Digit3: "3", // Stone Block
-  Digit4: "4", // Coal Ore Block
-  Digit5: "5", // Iron Ore Block
-  Digit6: "6", // Tree Top Block
-  Digit7: "7", // Leaves Block
-  Digit8: "8", // Sand Block
-  Digit9: "9", // Blaze Rod
-  Keyb: "10", // Mushroom Stew
-  Keyl: "11", // Warped Stem
-  Keyk: "12"  // Wool
-};
-
 
 export class Player {
     height = 1.75;
@@ -74,7 +59,14 @@ export class Player {
         return this._activeBlockId;
     }
 
-    
+    updateTool() {
+        // Logic to update the tool based on the active block ID
+        if (this._activeBlockId === "blazeRod") {
+            this.setTool(createBlazeRodTool());
+        } else {
+            this.tool.container.visible = false;
+        }
+    }
 
     constructor(scene, world) {
         this.world = world;
@@ -125,23 +117,8 @@ export class Player {
         const marketplaceItems = document.querySelectorAll(".marketplace-item");
         marketplaceItems.forEach(item => {
             item.addEventListener("click", (event) => {
-                const blockId = event.target.dataset.id;
+                const blockId = event.target.dataset.blockId;
                 this.activeBlockId = blockId;
-                this.updateTool();
-                console.log(blockId);
-
-                // Show the purchased item in the toolbar
-                const toolbarItem = document.getElementById(`toolbar-${blockId}`);
-                if (toolbarItem) {
-                    toolbarItem.style.display = 'block';
-                    toolbarItem.dataset.purchased = 'true';
-                }
-
-                // Update the selected toolbar icon
-                document
-                    .querySelectorAll(".toolbar-icon.selected")
-                    .forEach((el) => el.classList.remove("selected"));
-                toolbarItem?.classList.add("selected");
             });
         });
     }
@@ -305,25 +282,45 @@ export class Player {
             this.controls.lock();
         }
 
-        if (event.code in keyToBlockId) {
-            // Update the selected toolbar icon
-            document
-                .querySelectorAll(".toolbar-icon.selected")
-                .forEach((el) => el.classList.remove("selected"));
-            document
-                .getElementById(`toolbar-${keyToBlockId[event.code]}`)
-                ?.classList.add("selected");
-
-            this.activeBlockId = keyToBlockId[event.code];
-
-            // Update the pickaxe visibility
-            this.tool.container.visible = this.activeBlockId !== blocks.empty.id;
-
-            return;
-        }
-
         switch (event.code) {
-            // Handle other keys that are not mapped to block IDs
+            case "Digit0":
+            case "Digit1":
+            case "Digit2":
+            case "Digit3":
+            case "Digit4":
+            case "Digit5":
+            case "Digit6":
+            case "Digit7":
+            case "Digit8":
+                // Update the selected toolbar icon
+                document
+                    .getElementById(`toolbar-${this.activeBlockId}`)
+                    ?.classList.remove("selected");
+                document
+                    .getElementById(`toolbar-${event.key}`)
+                    ?.classList.add("selected");
+
+                this.activeBlockId = Number(event.key);
+
+                // Update the pickaxe visibility
+                this.tool.container.visible = this.activeBlockId === 0;
+
+                break;
+
+            // Handle marketplace item selection with letter keys
+            case "KeyB": // Blaze Rod
+                this.activeBlockId = "blazeRod";
+                break;
+            case "Keyf": // Mushroom Stew
+                this.activeBlockId = "mushroomStew";
+                break;
+            case "Keyv": // Warped Stem
+                this.activeBlockId = "warpedStem";
+                break;
+            case "KeyL": // Wool
+                this.activeBlockId = "wool";
+                break;
+
             case "KeyW":
                 this.input.z = this.maxSpeed;
                 break;

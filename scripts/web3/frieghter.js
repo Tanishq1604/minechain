@@ -1,10 +1,7 @@
 import {
-
   getPublicKey,
-
-
-    signTransaction,
-    setAllowed,
+  signTransaction,
+  setAllowed,
 } from "@stellar/freighter-api";
 
 async function checkConnection() {
@@ -18,9 +15,7 @@ const retrievePublicKey = async () => {
     let publicKey = "";
     let error = "";
     try {
-
         publicKey = await getPublicKey();
-
     } catch (e) {
         error = e;
     }
