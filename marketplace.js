@@ -17,25 +17,28 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = "none";
       }
     }
-  
 
     const items = document.querySelectorAll('.marketplace .item');
-  
+
     items.forEach(item => {
       item.addEventListener('click', () => {
         const itemId = item.getAttribute('data-id');
         const toolbarItem = document.getElementById(`toolbar-${itemId}`);
-        
+
         if (toolbarItem) {
           toolbarItem.style.display = 'inline';
           toolbarItem.setAttribute('data-purchased', 'true');
           modal.style.display = "none";
         }
-        document
-            .querySelectorAll(".toolbar-icon.selected")
-            .forEach((el) => el.classList.remove("selected"));
+
+        // Show or hide lock icon
+        const lockOverlay = item.querySelector('.lock-overlay');
+        if (lockOverlay) {
+          lockOverlay.style.display = 'none';
+        }
+
+        document.querySelectorAll(".toolbar-icon.selected").forEach((el) => el.classList.remove("selected"));
         toolbarItem?.classList.add("selected");
       });
-
     });
   });
