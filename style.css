@@ -78,6 +78,7 @@ h1 {
   color: white;
 }
 
+
 /* Button to open the modal */
 #openModalBtn {
   position: fixed;
@@ -235,6 +236,7 @@ h1 {
 }
 
 
+
 #popup {
   display: none;
   position: fixed;
@@ -287,5 +289,7 @@ h1 {
 
 #marketButton:hover {
   background-color: #45a049; /* Darker green on hover */
+
 }
+
 

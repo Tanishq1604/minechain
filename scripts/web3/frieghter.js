@@ -1,5 +1,7 @@
 import {
+
   getPublicKey,
+
 
     signTransaction,
     setAllowed,
@@ -16,7 +18,9 @@ const retrievePublicKey = async () => {
     let publicKey = "";
     let error = "";
     try {
+
         publicKey = await getPublicKey();
+
     } catch (e) {
         error = e;
     }

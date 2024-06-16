@@ -2,6 +2,7 @@ import { checkConnection,retrievePublicKey } from "./frieghter"
 
 const btn = document.getElementById('myButton')
 
+
 btn.addEventListener("click", async function() {
     if(checkConnection){
         var popup = document.getElementById("popup");
@@ -17,6 +18,7 @@ btn.addEventListener("click", async function() {
             btn.style.left= "56px";
             btn.style.top = "700px";
             btn.textContent="Connected /check"
+
             popup.style.display = "none"; 
         }, 2000);
     }else{
