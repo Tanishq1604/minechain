@@ -3,6 +3,18 @@
 ## **Project Overview**
 This project is a fully functional clone of Minecraft, enhanced with stellar blockchain technology to offer a unique gaming experience. Players can not only enjoy the classic Minecraft gameplay but also interact with an integrated marketplace, earn points, and make in-game purchases using blockchain.
 
+## **Screenshots**
+
+<p float="left">
+  <img src="./public/images/WhatsApp Image 2024-06-16 at 23.30.22.jpg" width="48%" />
+  <img src="./public/images/WhatsApp Image 2024-06-16 at 23.30.41.jpeg" width="48%" />
+</p>
+<p float="left">
+  <img src="./public/images/WhatsApp Image 2024-06-16 at 23.30.57.jpeg" width="48%" />
+  <img src="./public/images/WhatsApp Image 2024-06-16 at 23.31.49.jpeg" width="48%" />
+</p>
+
+
 ## **Key Features**
 
 - **Immersive Gameplay:** Experience the core mechanics of Minecraft, including mining, crafting, building, and exploring a procedurally generated world with various biomes and resources.
