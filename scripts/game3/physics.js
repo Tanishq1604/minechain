@@ -26,12 +26,6 @@ export class Physics {
   // Accumulator to keep track of leftover dt
   accumulator = 0;
 
-
-
-
-
-
-  
   constructor(scene) {
     this.helpers = new THREE.Group();
     this.helpers.visible = false;

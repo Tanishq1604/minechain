@@ -18,27 +18,23 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   
-    const marketplaceItems = document.querySelectorAll(".item");
-    marketplaceItems.forEach(item => {
-        item.addEventListener("click", (event) => {
-            const blockId = event.target.dataset.blockId;
-            console.log(blockId);
-            this.activeBlockId = blockId;
-    
-            // Show the purchased item in the toolbar
-            const toolbarItem = document.getElementById(`toolbar-${blockId}`);
-            if (toolbarItem) {
-                toolbarItem.style.display = 'block';
-                toolbarItem.dataset.purchased = 'true';
-            }
-    
-            // Update the selected toolbar icon
-            document
-                .querySelectorAll(".toolbar-icon.selected")
-                .forEach((el) => el.classList.remove("selected"));
-            toolbarItem?.classList.add("selected");
-        });
+    const items = document.querySelectorAll('.marketplace .item');
+  
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        const itemId = item.getAttribute('data-id');
+        const toolbarItem = document.getElementById(`toolbar-${itemId}`);
+        
+        if (toolbarItem) {
+          toolbarItem.style.display = 'inline';
+          toolbarItem.setAttribute('data-purchased', 'true');
+          modal.style.display = "none";
+        }
+        document
+            .querySelectorAll(".toolbar-icon.selected")
+            .forEach((el) => el.classList.remove("selected"));
+        toolbarItem?.classList.add("selected");
+      });
     });
-    
   });
   
